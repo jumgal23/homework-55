@@ -23,6 +23,7 @@ class Article(models.Model):
     type = models.ForeignKey(Type, on_delete=models.PROTECT, verbose_name='Тип')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
+    types = models.ManyToManyField('to_do_list.Type', blank=True, related_name='articles', verbose_name='Типы')
 
     def __str__(self):
         return f'{self.id}. {self.description}. {self.status}'
