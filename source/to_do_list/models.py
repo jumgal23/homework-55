@@ -1,13 +1,29 @@
 from django.db import models
 
-status_choices = [('new', 'Новая'), ('in_progress', 'В процессе'),  ('done', 'Сделано')]
+
+
+class Type(models.Model):
+    name = models.CharField(max_length=50, unique=True, verbose_name='Типы')
+
+    def __str__(self):
+        return self.name
+
+
+class Status(models.Model):
+    name = models.CharField(max_length=50, unique=True, verbose_name='Статусы')
+
+    def __str__(self):
+        return self.name
 
 
 class Article(models.Model):
-    description = models.TextField(max_length=3000, null=False, blank=False, verbose_name='Описание')
-    created_at = models.DateField(null=True, blank=True, verbose_name='Дата выполнения')
-    detailed_description = models.TextField(max_length=3000, null=True, blank=True, verbose_name='Подробное описание')
-    status = models.CharField(max_length=50, null=False, blank=False, verbose_name="Статус", choices=status_choices, default='new')
+    description = models.CharField(max_length=255, verbose_name='Описание')
+    detailed_description = models.TextField(blank=True, verbose_name='Детальное описание')
+    status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name='Статус')
+    type = models.ForeignKey(Type, on_delete=models.PROTECT, verbose_name='Тип')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
 
     def __str__(self):
         return f'{self.id}. {self.description}. {self.status}'
+

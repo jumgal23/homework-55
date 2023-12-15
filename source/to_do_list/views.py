@@ -22,15 +22,18 @@ def article_create_view(request):
         form = ArticleForm(data=request.POST)
 
         if form.is_valid():
+            status = form.cleaned_data['status'].get()
+            type = form.cleaned_data['type'].get()
             article = Article.objects.create(
-                status=form.cleaned_data.get('status'),
                 description=form.cleaned_data.get('description'),
                 detailed_description=form.cleaned_data.get('detailed_description'),
-                created_at=form.cleaned_data.get('created_at')
+                status=status,
+                type=type,
             )
             return redirect('article_view', pk=article.pk)
         else:
             return render(request, 'article_create.html', {'form': form})
+
 
 
 def article_update_view(request, pk):
