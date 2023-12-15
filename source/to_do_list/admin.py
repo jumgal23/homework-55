@@ -1,13 +1,26 @@
 from django.contrib import admin
-from to_do_list.models import Article
+from to_do_list.models import Article, Status, Type
 
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['id', 'status', 'description', 'created_at','detailed_description']
-    list_display_links = ['id', 'status', 'description', 'created_at']
-    list_filter = ['status']
-    search_fields = ['id', 'status']
-    fields = ['status', 'description', 'created_at','detailed_description']
-    readonly_fields = ['created_at']
+    list_display = ['id', 'status','type', 'description', 'detailed_description', 'created_at', 'updated_at']
+    list_display_links = ['id', 'status', 'description', 'type']
+    list_filter = ['status', 'type']
+    search_fields = ['id', 'status', 'type']
+    fields = ['status', 'type', 'description', 'detailed_description', 'created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at']
 
+@admin.register(Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name']
+    list_display_links = ['id', 'name']
+    search_fields = ['id', 'name']
+    fields = ['name']
+
+@admin.register(Type)
+class TypeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name']
+    list_display_links = ['id', 'name']
+    search_fields = ['id', 'name']
+    fields = ['name']
