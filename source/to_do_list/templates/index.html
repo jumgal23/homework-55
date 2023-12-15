@@ -9,9 +9,9 @@
     {% for article in articles %}
         <div class="card my-3" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">{{ article.id }}</h5>
+                <h5 class="card-title">{{ article.status }}</h5>
+                <h5 class="card-title">{{ article.type }}</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ article.description }}</h6>
-                <p class="card-text">{{ article.created_at }}</p>
                 <a href="{% url 'article_view' pk=article.pk %}" class="card-link">Подробнее...</a>
                 <a href="{% url 'article_update_view' pk=article.pk %}" class="card-link">Редактировать</a>
                 <a href="{% url 'article_delete_view' pk=article.pk %}" class="card-link">Удалить</a>

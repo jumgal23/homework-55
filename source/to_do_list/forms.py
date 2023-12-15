@@ -3,8 +3,6 @@ from django.forms import widgets
 from to_do_list.models import Status, Type
 
 
-status_choices = [('new', 'Новая'), ('in_progress', 'В процессе'),  ('done', 'Сделано')]
-
 
 class ArticleForm(forms.Form):
     description = forms.CharField(max_length=255, label='Описание')
