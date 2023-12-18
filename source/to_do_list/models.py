@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 
 
@@ -17,8 +18,8 @@ class Status(models.Model):
 
 
 class Article(models.Model):
-    description = models.CharField(max_length=255, verbose_name='Описание')
-    detailed_description = models.TextField(blank=True, verbose_name='Детальное описание')
+    description = models.CharField(max_length=255, verbose_name='Описание', validators=[MinLengthValidator(10)])
+    detailed_description = models.TextField(blank=True, verbose_name='Детальное описание', validators=[MinLengthValidator(20)])
     status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name='Статус')
     type = models.ForeignKey(Type, on_delete=models.PROTECT, verbose_name='Тип')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
