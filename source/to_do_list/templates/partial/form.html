@@ -1,9 +1,12 @@
+<form action="{{ action_url }}" method="{{ form_method }}">
+
 {% csrf_token %}
 {% for error in form.non_field_errors %}
 
     <p class="text-danger">{{ error }}</p>
 
 {% endfor %}
+
 {% for field in form %}
     <label for="{{ field.id_for_label }}">{{ field.label }}:</label><br/>
     {{ field }}
@@ -19,3 +22,4 @@
 
 
 <input type="submit" value="{{ value_submit }}"/>
+</form>
