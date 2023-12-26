@@ -1,26 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from to_do_list.models import Article, Project
-from to_do_list.forms import ArticleForm
+from to_do_list.models import Task, Project
+from to_do_list.forms import TaskForm
 from django.views.generic import View, TemplateView, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.urls import reverse_lazy
 
 
 
-class ArticleView(TemplateView):
-    model = Article
-    template_name = 'article_view.html'
+class TaskView(TemplateView):
+    model = Task
+    template_name = 'task_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['article'] = get_object_or_404(Article, pk=kwargs.get('pk'))
+        context['task'] = get_object_or_404(Task, pk=kwargs.get('pk'))
         return context
 
 
-class ArticleCreateView(CreateView):
-    model = Article
-    form_class = ArticleForm
-    template_name = 'article_create.html'
+class TaskCreateView(CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'task_create.html'
 
     def form_valid(self, form):
         project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
@@ -32,23 +32,23 @@ class ArticleCreateView(CreateView):
 
 
 
-class ArticleUpdateView(UpdateView):
-    model = Article
-    form_class = ArticleForm
-    template_name = 'article_update.html'
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'task_update.html'
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Article, pk=self.kwargs.get('pk'))
+        return get_object_or_404(Task, pk=self.kwargs.get('pk'))
 
     def form_valid(self, form):
         form.save()
-        return redirect('article_view', pk=self.object.pk)
+        return redirect('task_view', pk=self.object.pk)
 
 
 
-class ArticleDeleteView(DeleteView):
-    model = Article
-    template_name = 'article_delete.html'
+class TaskDeleteView(DeleteView):
+    model = Task
+    template_name = 'task_delete.html'
 
     def get_success_url(self):
         project_id = self.object.project.id

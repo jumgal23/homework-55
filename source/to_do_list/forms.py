@@ -1,12 +1,12 @@
 from django import forms
 from django.forms import widgets
-from to_do_list.models import Status, Type, Article, Project
+from to_do_list.models import Status, Type, Task, Project
 
 
 
-class ArticleForm(forms.ModelForm):
+class TaskForm(forms.ModelForm):
     class Meta:
-        model = Article
+        model = Task
         field = ('description', 'detailed_description', 'status', 'type', 'created_at', 'updated_at')
         exclude = ('types',)
 

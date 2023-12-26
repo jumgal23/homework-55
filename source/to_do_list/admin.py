@@ -1,9 +1,9 @@
 from django.contrib import admin
-from to_do_list.models import Article, Status, Type, Project
+from to_do_list.models import Task, Status, Type, Project
 
 
-@admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
     list_display = ['id', 'status','type', 'description', 'detailed_description', 'created_at', 'updated_at']
     list_display_links = ['id', 'status', 'description', 'type']
     list_filter = ['status', 'type']

@@ -27,7 +27,7 @@ class Project(models.Model):
         return self.name
 
 
-class Article(models.Model):
+class Task(models.Model):
     description = models.CharField(max_length=255, verbose_name='Описание', validators=[MinLengthValidator(10)])
     detailed_description = models.TextField(blank=True, verbose_name='Детальное описание', validators=[MinLengthValidator(20)])
     status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name='Статус')
