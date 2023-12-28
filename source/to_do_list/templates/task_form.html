@@ -10,5 +10,5 @@
         {{ form.as_p }}
         <input type="submit" value="Create">
     </form>
-    <a href="{% url 'project_detail' pk=object.project.pk %}">Cancel</a>
+    <a href="{% url 'to_do_list:project_detail' pk=object.project.pk %}">Cancel</a>
 {% endblock %}

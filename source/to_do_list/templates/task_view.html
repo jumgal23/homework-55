@@ -2,8 +2,8 @@
 
 {% block title %}{{ task.title }}{% endblock %}
 {% block menu %}
-    <a class="nav-link" aria-current="page"  href="{% url 'task_update_view' pk=task.pk %}">Редактировать</a>
-    <a class="nav-link" aria-current="page"  href="{% url 'task_delete_view' pk=task.pk %}">Удалить</a>
+    <a class="nav-link" aria-current="page"  href="{% url 'to_do_list:task_update_view' pk=task.pk %}">Редактировать</a>
+    <a class="nav-link" aria-current="page"  href="{% url 'to_do_list:task_delete_view' pk=task.pk %}">Удалить</a>
 {% endblock %}
 
 {% block content %}

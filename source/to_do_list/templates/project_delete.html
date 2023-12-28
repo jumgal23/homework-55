@@ -9,6 +9,6 @@
         {% csrf_token %}
         <p>Are you sure you want to delete this project?</p>
         <input type="submit" value="Yes, delete">
-        <a href="{% url 'project_index' %}">No, go back</a>
+        <a href="{% url 'to_do_list:project_index' %}">No, go back</a>
     </form>
 {% endblock %}

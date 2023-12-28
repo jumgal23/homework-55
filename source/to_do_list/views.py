@@ -28,7 +28,7 @@ class TaskCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('project_detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('to_do_list:project_detail', kwargs={'pk': self.kwargs['pk']})
 
 
 
@@ -42,7 +42,7 @@ class TaskUpdateView(UpdateView):
 
     def form_valid(self, form):
         form.save()
-        return redirect('task_view', pk=self.object.pk)
+        return redirect('to_do_list:task_view', pk=self.object.pk)
 
 
 
@@ -52,7 +52,7 @@ class TaskDeleteView(DeleteView):
 
     def get_success_url(self):
         project_id = self.object.project.id
-        return reverse_lazy('project_detail', kwargs={'pk': project_id})
+        return reverse_lazy('to_do_list:project_detail', kwargs={'pk': project_id})
 
 
 class ProjectIndexView(ListView):
@@ -78,20 +78,20 @@ class ProjectCreateView(CreateView):
     model = Project
     template_name = 'project_form.html'
     fields = ['start_date', 'end_date', 'name', 'description']
-    success_url = reverse_lazy('project_index')
+    success_url = reverse_lazy('to_do_list:project_index')
 
 
 class ProjectUpdateView(UpdateView):
     model = Project
     template_name = 'project_form.html'
     fields = ['start_date', 'end_date', 'name', 'description']
-    success_url = reverse_lazy('project_index')
+    success_url = reverse_lazy('to_do_list:project_index')
 
 
 class ProjectDeleteView(DeleteView):
     model = Project
     template_name = ('project_delete.html')
-    success_url = reverse_lazy('project_index')
+    success_url = reverse_lazy('to_do_list:project_index')
 
 
 

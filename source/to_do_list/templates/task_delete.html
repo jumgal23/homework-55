@@ -11,6 +11,6 @@
     {% csrf_token %}
     <input type="submit" value="ДА"/>
 </form>
-    <a href="{% url 'task_view' pk=task.pk %}">Нет</a>
+    <a href="{% url 'to_do_list:task_view' pk=task.pk %}">Нет</a>
 
 {% endblock %}
