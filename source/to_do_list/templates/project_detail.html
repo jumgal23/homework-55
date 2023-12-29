@@ -2,15 +2,22 @@
 {% extends 'base.html' %}
 
 {% block title %}Project Detail{% endblock %}
-{% block menu %}<a class="nav-link" aria-current="page" href="{% url 'to_do_list:task_create' pk=project.pk %}">Создать статью</a>{% endblock %}
+    {% block menu %}
+        {% if request.user.is_authenticated %}
+        <a class="nav-link" aria-current="page" href="{% url 'to_do_list:task_create' pk=project.pk %}">Создать статью</a>
+        {% endif %}
+    {% endblock %}
 
 {% block content %}
     <h1>{{ project.name }}</h1>
     <p>{{ project.description }}</p>
     <p>{{ project.start_date }}</p>
     <p>{{ project.end_date }}</p>
-    <a class="me-3" href="{% url 'to_do_list:project_update' pk=project.pk %}">Редактировать проект</a>
-    <a href="{% url 'to_do_list:project_delete' pk=project.pk %}">Удалить проект</a>
+    {% if request.user.is_authenticated %}
+        <a class="me-3" href="{% url 'to_do_list:project_update' pk=project.pk %}">Редактировать проект</a>
+        <a href="{% url 'to_do_list:project_delete' pk=project.pk %}">Удалить проект</a>
+    {% endif %}
+
 
     <h2>Tasks:</h2>
     <div class="row row-cols-3">
@@ -22,8 +29,11 @@
                         <h6 class="card-title">{{ task.type }}</h6>
                         <h6 class="card-subtitle mb-2 text-body-secondary">{{ task.description }}</h6>
                         <a href="{% url 'to_do_list:task_view' pk=task.pk %}" class="card-link">Подробнее...</a>
-                        <a href="{% url 'to_do_list:task_update_view' pk=task.pk %}" class="card-link">Редактировать</a>
-                        <a href="{% url 'to_do_list:task_delete_view' pk=task.pk %}" class="card-link">Удалить</a>
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'to_do_list:task_update_view' pk=task.pk %}" class="card-link">Редактировать</a>
+                            <a href="{% url 'to_do_list:task_delete_view' pk=task.pk %}" class="card-link">Удалить</a>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

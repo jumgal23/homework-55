@@ -10,7 +10,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('webapp:index')
+            return redirect('to_do_list:project_index')
         else:
             context['has_error'] = True
     return render(request, 'login.html', context=context)
@@ -18,4 +18,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('webapp:index')
+    return redirect('to_do_list:project_index')
