@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Удалить пользователей из проекта</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Remove Users</button>
+  </form>
+
+  <a href="{% url 'to_do_list:project_detail' pk=project.pk %}">Cancel</a>
+{% endblock %}

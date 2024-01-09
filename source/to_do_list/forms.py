@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import widgets
 from to_do_list.models import Status, Type, Task, Project
+from django.contrib.auth.models import User
+
 
 
 
@@ -19,3 +21,19 @@ class ProjectForm(forms.ModelForm):
 
 class SimpleSearchForm(forms.Form):
     search = forms.CharField(max_length=100, required=False, label='Найти')
+
+
+# class ProjectUserForm(forms.Form):
+#     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+
+class ProjectUserForm(forms.ModelForm):
+    users = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label='Select Users'
+    )
+
+    class Meta:
+        model = Project
+        fields = []  # No need to include any fields from the Project model

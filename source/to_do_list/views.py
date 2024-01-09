@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from to_do_list.models import Task, Project
-from to_do_list.forms import TaskForm
+from to_do_list.forms import TaskForm, ProjectUserForm
 from django.views.generic import View, TemplateView, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
+
 
 
 
@@ -94,5 +96,40 @@ class ProjectDeleteView(DeleteView):
     success_url = reverse_lazy('to_do_list:project_index')
 
 
+class ProjectUserAddView(View):
+    template_name = 'project_user_add.html'
 
+    def get(self, request, pk):
+        project = get_object_or_404(Project, pk=pk)
+        form = ProjectUserForm()  # This line should instantiate the form, not call it as a function
+        return render(request, self.template_name, {'project': project, 'form': form})
 
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk)
+        form = ProjectUserForm(request.POST)  # This is the correct way to instantiate the form
+
+        if form.is_valid():
+            users = form.cleaned_data['users']
+            project.users.set(users)
+            return redirect('to_do_list:project_detail', pk=pk)
+
+        return render(request, self.template_name, {'project': project, 'form': form})
+
+class ProjectUserRemoveView(View):
+    template_name = 'project_user_remove.html'
+
+    def get(self, request, pk):
+        project = get_object_or_404(Project, pk=pk)
+        form = ProjectUserForm(initial={'users': project.users.all()})
+        return render(request, self.template_name, {'project': project, 'form': form})
+
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk)
+        form = ProjectUserForm(request.POST, initial={'users': project.users.all()})
+
+        if form.is_valid():
+            users = form.cleaned_data['users']
+            project.users.remove(*users)
+            return redirect('to_do_list:project_detail', pk=pk)
+
+        return render(request, self.template_name, {'project': project, 'form': form})

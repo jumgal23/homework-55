@@ -1,7 +1,8 @@
 from django.urls import path
 from to_do_list.views import  (TaskView, TaskUpdateView, TaskDeleteView,
                                ProjectIndexView, ProjectDetailView, ProjectCreateView,
-                               ProjectUpdateView, ProjectDeleteView, TaskCreateView)
+                               ProjectUpdateView, ProjectDeleteView, TaskCreateView,
+                               ProjectUserAddView, ProjectUserRemoveView)
 
 app_name = 'to_do_list'
 
@@ -15,5 +16,7 @@ urlpatterns = [
     path('task/<int:pk>/', TaskView.as_view(), name='task_view'),
     path('task/<int:pk>/update/', TaskUpdateView.as_view(), name='task_update_view'),
     path('task/<int:pk>/delete/', TaskDeleteView.as_view(), name='task_delete_view'),
+    path('project/<int:pk>/add-users/', ProjectUserAddView.as_view(), name='project_add_users'),
+    path('project/<int:pk>/remove-users/', ProjectUserRemoveView.as_view(), name='project_remove_users'),
 ]
 
