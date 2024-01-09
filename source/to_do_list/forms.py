@@ -10,7 +10,7 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         field = ('description', 'detailed_description', 'status', 'type', 'created_at', 'updated_at')
-        exclude = ('types',)
+        exclude = ('types','project', 'author')
 
 
 class ProjectForm(forms.ModelForm):

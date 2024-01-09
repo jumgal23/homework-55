@@ -3,7 +3,9 @@
 {% block title %}Project List{% endblock %}
     {% block menu %}
         {% if request.user.is_authenticated %}
+            {% if perms.to_do_list.change_article or article.author == request.user %}
         <a class="nav-link" aria-current="page" href="{% url 'to_do_list:project_create' %}" >Создать проект</a>
+                    {% endif %}
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -23,6 +25,7 @@
                         <div class="card-body">
                             <h6 class="card-title">{{ project.name }}</h6>
                             <h6 class="card-title">{{ project.description }}</h6>
+                            <h6 class="card-title">{{ project.author }}</h6>
                             <h6 class="card-subtitle mb-2 text-body-secondary">{{ project.start_date }}</h6>
                             <h6 class="card-subtitle mb-2 text-body-secondary">{{ project.end_date }}</h6>
                             <a href="{% url 'to_do_list:project_detail' pk=project.pk %}" class="card-link">Подробнее...</a>

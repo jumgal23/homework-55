@@ -15,6 +15,7 @@
 {% block content %}
     <h1>{{ project.name }}</h1>
     <p>{{ project.description }}</p>
+    <p>{{ project.author }}</p>
     <p>{{ project.start_date }}</p>
     <p>{{ project.end_date }}</p>
 
@@ -24,13 +25,18 @@
             <div class="col">
                 <div class="card my-3" style="width: 18rem;">
                     <div class="card-body">
+                        <h6 class="card-title">{{ task.author }}</h6>
                         <h6 class="card-title">{{ task.status }}</h6>
                         <h6 class="card-title">{{ task.type }}</h6>
                         <h6 class="card-subtitle mb-2 text-body-secondary">{{ task.description }}</h6>
                         <a href="{% url 'to_do_list:task_view' pk=task.pk %}" class="card-link">Подробнее...</a>
                         {% if request.user.is_authenticated %}
+                            {% if perms.to_do_list.change_article or article.author == request.user %}
                             <a href="{% url 'to_do_list:task_update_view' pk=task.pk %}" class="card-link">Редактировать</a>
+                                {% endif %}
+                                {% if perms.to_do_list.change_article or article.author == request.user %}
                             <a href="{% url 'to_do_list:task_delete_view' pk=task.pk %}" class="card-link">Удалить</a>
+                                {% endif %}
                         {% endif %}
 
                     </div>

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from to_do_list.models import Task, Project
 from to_do_list.forms import TaskForm, ProjectUserForm
@@ -5,7 +6,6 @@ from django.views.generic import View, TemplateView, FormView, ListView, DetailV
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-
 
 
 
@@ -19,14 +19,21 @@ class TaskView(TemplateView):
         return context
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(PermissionRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = 'task_create.html'
+    permission_required = 'to_do_list.add_task'
+
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.get_object().author
+
 
     def form_valid(self, form):
         project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
         form.instance.project = project
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -34,10 +41,14 @@ class TaskCreateView(CreateView):
 
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(PermissionRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'task_update.html'
+    permission_required = 'to_do_list.delete_comment'
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.get_object().author
 
     def get_object(self, queryset=None):
         return get_object_or_404(Task, pk=self.kwargs.get('pk'))
@@ -48,9 +59,13 @@ class TaskUpdateView(UpdateView):
 
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(PermissionRequiredMixin, DeleteView):
     model = Task
     template_name = 'task_delete.html'
+    permission_required = 'to_do_list.delete_task'
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.get_object().author
 
     def get_success_url(self):
         project_id = self.object.project.id
@@ -81,19 +96,31 @@ class ProjectCreateView(CreateView):
     template_name = 'project_form.html'
     fields = ['start_date', 'end_date', 'name', 'description']
     success_url = reverse_lazy('to_do_list:project_index')
+    def form_valid(self, form):
+        self.project = form.save(commit=False)
+        self.project.author = self.request.user
+        self.project.save()
+        form.save_m2m()
+        return redirect('to_do_list:add_project', pk=self.project.pk)
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(PermissionRequiredMixin, UpdateView):
     model = Project
     template_name = 'project_form.html'
     fields = ['start_date', 'end_date', 'name', 'description']
     success_url = reverse_lazy('to_do_list:project_index')
+    permission_required = 'to_do_list.change_project'
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.get_object().author
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(UserPassesTestMixin,DeleteView):
     model = Project
     template_name = ('project_delete.html')
     success_url = reverse_lazy('to_do_list:project_index')
+    def test_func(self):
+        return self.request.user.has_perm('to_do_list.delete_project') or self.request.user == self.get_object().author
 
 
 class ProjectUserAddView(View):

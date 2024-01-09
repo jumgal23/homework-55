@@ -3,8 +3,12 @@
 {% block title %}{{ task.title }}{% endblock %}
 {% block menu %}
     {% if request.user.is_authenticated %}
+        {% if perms.to_do_list.change_article or article.author == request.user %}
         <a class="nav-link" aria-current="page"  href="{% url 'to_do_list:task_update_view' pk=task.pk %}">Редактировать</a>
+    {% endif %}
+            {% if perms.to_do_list.change_article or article.author == request.user %}
         <a class="nav-link" aria-current="page"  href="{% url 'to_do_list:task_delete_view' pk=task.pk %}">Удалить</a>
+                {% endif %}
     {% endif %}
 
 {% endblock %}
@@ -13,6 +17,7 @@
     <h1>Task</h1>
         <div class="card" >
             <div class="card-body">
+                <p class="card-subtitle mb-2 text-body-secondary">{{ task.author }}</p>
                 <p class="card-subtitle mb-2 text-body-secondary">{{ task.type }}</p>
                 <p class="card-subtitle mb-2 text-body-secondary">{{ task.status }}</p>
                 <h5 class="card-subtitle mb-2 text-body-secondary">{{ task.description }}</h5>
